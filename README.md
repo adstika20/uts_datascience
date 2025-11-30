@@ -17,7 +17,7 @@ Industri perbankan menghadapi tantangan signifikan dalam mengoptimalkan kampanye
 4. Membandingkan performa berbagai algoritma machine learning (Random Forest, Support Vector Machine, K-Nearest Neighbors, Gradient Boosting)
 5. Mengembangkan web application di Platform Hugging Face untuk deployment model
 
-#### 1.4 Manfaat
+### 1.4 Manfaat
 1. Meningkatkan efisiensi kampanye dengan mengurangi jumlah panggilan yang tidak produktif
 2. Menghemat biaya operasional telemarketingMemberikan kontribusi dalam pengembangan metode feature engineering
 3. Menambah literatur tentang penerapan machine learning dalam sektor perbankan
@@ -27,50 +27,47 @@ Industri perbankan menghadapi tantangan signifikan dalam mengoptimalkan kampanye
 
 ### 2.1 Deskripsi dataset
 
-**Nama:** [Pima Indians Diabetes Database](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database)  
-**Sumber:** National Institute of Diabetes and Digestive and Kidney Diseases  
-**Jumlah sampel:** 768 
+**Nama:** [Bank Marketing](https://archive.ics.uci.edu/dataset/222/bank+marketing)  
+**Sumber:** UCI Machine Learning Repository
+**Jumlah:** 45.211 sampel dengan 17 kolom
 
-#### Variabel Fitur
+#### A. Informasi Nasabah
+| Fitur     | Tipe        | Deskripsi                                                        |
+|-----------|-------------|------------------------------------------------------------------|
+| age       | Numerik     | Usia nasabah                                                     |
+| job       | Kategorikal | Jenis pekerjaan (admin, blue-collar, entrepreneur, dll)          |
+| marital   | Kategorikal | Status pernikahan (married, single, divorced)                    |
+| education | Kategorikal | Tingkat pendidikan (primary, secondary, tertiary, unknown)       |
+| default   | Kategorikal | Apakah memiliki kredit macet (yes/no)                            |
+| balance   | Numerik     | Saldo rata-rata tahunan (dalam euro)                             |
+| housing   | Kategorikal | Apakah memiliki pinjaman perumahan (yes/no)                      |
+| loan      | Kategorikal | Apakah memiliki pinjaman pribadi (yes/no)                        |
 
-| Fitur         | Deskripsi                                                                            | Tipe Data     | Rata-rata(Mean) |
-|-----------------|---------------------------------------------------------------------------------------------------------|----------|-----------|
-| Pregnancies            | Jumlah total kehamilan yang pernah dialami oleh pasien.                                                | Numerik  | 3.85      |
-| Glucose         | Konsentrasi glukosa plasma 2 jam setelah tes toleransi glukosa oral.                                   | Numerik  | 120.89    |
-| BloodPressure              | Tekanan darah diastolik (mm Hg) saat pemeriksaan.                                                      | Numerik  | 69.11     |
-| SkinThickness   | Tebal lipatan kulit trisep (mm) sebagai indikator lemak subkutan.                                      | Numerik  | 20.54     |
-| Insulin         | Kadar insulin serum 2 jam setelah konsumsi glukosa (µIU/mL).                                           | Numerik  | 79.80     |
-| BMI             | Indeks massa tubuh (kg/m²), indikator berat badan relatif terhadap tinggi badan.                       | Numerik  | 32        |
-| DiabetesPedigreeFunction	             | Fungsi silsilah diabetes; mengukur predisposisi genetik terhadap diabetes berdasarkan riwayat keluarga. | Numerik  | 0.47      |
-| Age             | Usia pasien dalam tahun.                                                                               | Numerik  | 33        |
-| Outcome         | Hasil diagnosis diabetes (1 = positif diabetes, 0 = negatif diabetes).                                 | Nominal  | –         |
+#### B. Informasi Kontak Kampanye
+| Fitur    | Tipe        | Deskripsi                                           |
+|----------|-------------|-----------------------------------------------------|
+| contact  | Kategorikal | Tipe komunikasi (cellular, telephone, unknown)      |
+| day      | Numerik     | Hari dalam bulan ketika nasabah dihubungi           |
+| month    | Kategorikal | Bulan terakhir kontak dalam setahun                 |
+| duration | Numerik     | Durasi kontak terakhir (dalam detik)                |
 
-#### Variabel Target
+#### C. Informasi Kampanye Sebelumnya
+| Fitur    | Tipe        | Deskripsi                                                         |
+|----------|-------------|-------------------------------------------------------------------|
+| campaign | Numerik     | Jumlah kontak dalam kampanye ini                                  |
+| pdays    | Numerik     | Hari sejak terakhir dihubungi dari kampanye sebelumnya            |
+| previous | Numerik     | Jumlah kontak sebelum kampanye ini                                |
+| poutcome | Kategorikal | Hasil kampanye sebelumnya (success, failure, other, unknown)      |
 
-Dataset ini bertujuan memprediksi status diabetes pasien (`Outcome`) berdasarkan 8 variabel klinis. Berikut distribusi untuk kelas `Outcome`
+#### D. Target Variable
+| Fitur | Tipe        | Deskripsi                                       |
+|-------|-------------|--------------------------------------------------|
+| y     | Kategorikal | Apakah nasabah berlangganan deposito (yes/no)    |
 
-| Kelas | Jumlah | Persentase | Visualisasi |
-|-------|--------|------------|-------------|
-| 0 (Negatif) | 500 | 65.1% | ████████████████ |
-| 1 (Positif) | 268 | 34.9% | ████████ |
-| **Total** | **768** | **100%** | |
 
-### 2.1 Eksplorasi Data
+### 2.2 Eksplorasi Data
 
-#### Univariate Analysis
-
-| Pregnancies | Glucose | Blood Pressure | Skin Thickness |
-|------------|---------|----------------|----------------|
-| ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/pregnancies.png) | ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/glucose.png) | ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/blood.png) | ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/skin.png) |
-
-| Insulin | BMI | Diabetes Pedigree | Age |
-|---------|-----|-------------------|-----|
-| ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/insulin.png) | ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/bmi.png) | ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/pdf.png) | ![](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/age.png) |
-
-Sebagian fitur, seperti `Glucose`, `BMI`, dan `BloodPressure`, memiliki distribusi relatif normal sehingga dapat diandalkan dalam modeling, meskipun nilai 0 pada `Glucose` dan `BloodPressure` tetap perlu diperlakukan sebagai missing. `Pregnancies`, `DiabetesPedigreeFunction`, dan `Age` cenderung right-skewed sehingga memerlukan transformasi atau strategi pemodelan khusus, sementara `SkinThickness` dan `Insulin` menghadapi isu serius karena tingginya proporsi nilai 0 yang jelas mencerminkan missing values, masing-masing sekitar 30 persen dan 48 persen. Kondisi ini menyebabkan kedua fitur tersebut berpotensi menurunkan performa model jika tidak ditangani melalui imputasi lanjutan atau bahkan dikeluarkan dari analisis.
-  
-#### Corellation Analysis
-![Korelasi Antar Variabel](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/korelasi%20antar%20variabel.png)
+![Korelasi Antar Variabel](https://github.com/adstika20/uts_datascience/blob/main/Image/heatmap%20korelasi.png)
 
 Korelasi menunjukkan bahwa `Glucose` memiliki hubungan paling kuat dengan `Outcome` sehingga menjadi indikator utama risiko diabetes. Variabel seperti `BMI`, `Age`, dan `Insulin` memiliki korelasi sedang dengan `Outcome`. Sementara itu, fitur lain memiliki korelasi rendah satu sama lain sehingga tidak terdapat multikolinearitas berarti. 
 
