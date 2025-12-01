@@ -149,28 +149,22 @@ Berdasarkan tabel di atas, **Random Forest (RF)** dan **Gradient Boosting Classi
 
 ### 5.4 Confusion Matrix 
 
-| Logistic Regression | Neural Network (MLP) |
+| RF | SVM |
 |---------------------|-----------------------|
-| ![LR](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/LR.png) | ![MLP](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/NN%20MLP.png) |
+| ![RF](https://github.com/adstika20/uts_datascience/blob/main/Image/confussion%20matrix%20RF.png) | ![SVM](https://github.com/adstika20/uts_datascience/blob/main/Image/confussion%20matrix%20SVM.png) |
 
-| Random Forest | SVM |
+| GBC | KNN |
 |---------------|-----|
-| ![RF](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/RF.png) | ![SVM](https://raw.githubusercontent.com/adstika20/datascience_proyek/main/image/SVM.png) |
+| ![GBC](https://github.com/adstika20/uts_datascience/blob/main/Image/confussion%20matrix%20gbc.png) | ![KNN](https://github.com/adstika20/uts_datascience/blob/main/Image/confussion%20matrix%20knn.png) |
 
-Secara keseluruhan, keempat confusion matrix memperlihatkan pola yang konsisten bahwa seluruh model memiliki kapasitas klasifikasi yang jauh lebih kuat terhadap kelas 0 (negatif diabetes) dibandingkan kelas 1 (positif diabetes). Logistic Regression dan Random Forest menunjukkan kinerja yang relatif stabil dengan kemampuan identifikasi kasus positif yang moderat namun masih dibayangi tingkat false negative yang substansial. SVM menampilkan performa paling seimbang di antara model konvensional, ditandai oleh false positive yang rendah dan kemampuan deteksi kelas positif yang sedikit lebih baik, meskipun kecenderungan bias menuju kelas mayoritas tetap dominan. Sebaliknya, MLP memperlihatkan kegagalan total dalam mengenali kelas positif karena seluruh instans kelas 1 diklasifikasikan sebagai 0, menandakan ketidakmampuan model dalam mempelajari representasi kelas minoritas.
+Berdasarkan confusion matrix dari keempat model, **Gradient Boosting Classifier (GBC)** dan **Random Forest (RF)** menunjukkan performa identik dengan kemampuan terbaik dalam memprediksi kelas mayoritas (class 0), dimana keduanya berhasil mengklasifikasikan 7752 True Negative dengan benar dan hanya 233 False Positive. Untuk kelas minoritas (class 1 - nasabah berlangganan), GBC dan RF mampu mendeteksi 445 True Positive namun masih melewatkan 613 False Negative, mengindikasikan bahwa sekitar 58% nasabah potensial masih terlewatkan. **SVM** menunjukkan performa terbaik dalam meminimalkan False Positive (hanya 148), namun memiliki False Negative tertinggi (782), yang berarti model ini terlalu konservatif dan melewatkan banyak peluang bisnis. Sebaliknya, **KNN** memiliki False Positive tertinggi (251) dan False Negative yang cukup besar (723), menunjukkan performa yang kurang konsisten dalam kedua kelas. Secara keseluruhan, GBC dan RF merupakan pilihan optimal karena memberikan trade-off terbaik antara menangkap nasabah potensial (True Positive) dan menghindari prediksi yang salah (False Positive), yang sangat penting untuk efisiensi kampanye telemarketing bank.
 
-### 5.5 Feature Importance dan Permutation 
 
-#### Perbandingan Feature Importance Antar Model
+### 5.5 Feature Importance 
 
-| Model                | Glucose | BMI      | Age      | Pregnancies |
-|----------------------|---------|----------|----------|-------------|
-| **Logistic Regression** | **1.1060** | 0.5350   | 0.0801   | 0.5133      |
-| **SVM (RBF)**           | **0.9221** | 0.3303   | 0.0212   | 0.4064      |
-| **Random Forest**       | **0.3850** | 0.2589   | 0.2247   | 0.1314      |
-| **Neural Network (MLP)** (Permutation) | **0.0969** | -0.0242  | 0.0008   | 0.0016      |
+![Feature Importance](https://github.com/adstika20/uts_datascience/blob/main/Image/Feature%20importance.png)
 
-**Glucose** konsisten menjadi fitur dengan pengaruh terbesar pada tiga model utama(LR, SVM, dan RF), menegaskan bahwa fitur ini merupakan sinyal paling kuat dalam memprediksi diabetes. **BMI** dan **Pregnancies** muncul dengan kontribusi menengah, sementara **Age** hanya menunjukkan pengaruh moderat pada **RF** dan hampir tidak signifikan pada model lainnya. **MLP** tidak memiliki feature importance internal sehingga dihitung menggunakan Permutation Importance. Hasilnya menunjukkan nilai importance yang sangat kecil dan tidak stabil, menandakan bahwa mengacak fitur-fitur tersebut tidak menurunkan performa model, sehingga MLP memang gagal mempelajari hubungan prediktif di data.
+Analisis feature importance menunjukkan bahwa **duration** (durasi panggilan) merupakan fitur paling dominan dengan importance score mendekati 1.0 pada semua model (SVC, KNN, Random Forest, dan Gradient Boosting), mengindikasikan bahwa durasi interaksi telepon adalah prediktor terkuat untuk keberhasilan kampanye, meskipun fitur ini tidak dapat digunakan untuk prediksi sebelum panggilan dilakukan. Fitur **pdays** (hari sejak kontak terakhir) juga menunjukkan importance tinggi khususnya pada model SVC (~1.0), KNN (~0.67), dan poutcome (~0.88 pada SVC), menandakan bahwa riwayat interaksi sebelumnya sangat berpengaruh terhadap keputusan nasabah. Fitur-fitur **poutcome** (hasil kampanye sebelumnya), **month** (bulan kontak), dan **age** menunjukkan importance moderat (~0.3) yang konsisten across models, mengindikasikan bahwa faktor temporal dan demografis memiliki pengaruh signifikan namun tidak dominan. Menariknya, terdapat perbedaan prioritas fitur antar model: tree-based models (Random Forest dan Gradient Boosting) memberikan bobot lebih tinggi pada fitur **balance**, **job**, **marital**, dan **day**, sementara distance-based models (SVC dan KNN) lebih fokus pada **duration**, **pdays**, dan **contact**. Secara keseluruhan, untuk keperluan prediksi praktis (tanpa menggunakan duration), kombinasi fitur **poutcome**, **month**, **pdays**, **age**, dan **balance** menjadi prediktor kunci yang harus dioptimalkan dalam strategi telemarketing bank.
 
 ---
 
