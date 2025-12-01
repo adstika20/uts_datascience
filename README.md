@@ -69,38 +69,18 @@ Industri perbankan menghadapi tantangan signifikan dalam mengoptimalkan kampanye
 
 ![Korelasi Antar Variabel](https://github.com/adstika20/uts_datascience/blob/main/Image/heatmap%20korelasi.png)
 
-Korelasi menunjukkan bahwa `Glucose` memiliki hubungan paling kuat dengan `Outcome` sehingga menjadi indikator utama risiko diabetes. Variabel seperti `BMI`, `Age`, dan `Insulin` memiliki korelasi sedang dengan `Outcome`. Sementara itu, fitur lain memiliki korelasi rendah satu sama lain sehingga tidak terdapat multikolinearitas berarti. 
+Sebagian besar fitur numerik memiliki korelasi yang sangat lemah (|r| < 0.2), mengindikasikan independensi informasi antar fitur dan tidak adanya masalah multicollinearity serius. Korelasi tertinggi terjadi antara `pdays` dan `previous` (r = 0.45), yang logis karena keduanya merepresentasikan informasi kampanye sebelumnya dan menunjukkan overlap informasi yang perlu diperhatikan dalam feature engineering. Fitur `day` berkorelasi lemah dengan `campaign` (r = 0.16), mengindikasikan strategi push di akhir bulan dengan lebih banyak attempt kontak. `Duration` menunjukkan korelasi negatif sangat lemah dengan campaign (r = -0.08), menandakan durasi percakapan cenderung lebih pendek saat nasabah telah dihubungi berkali-kali. 
 
 ## 3. Data Preparation  
 
-### 3.1 Feature Selection Based on Correlation
-**Metode:** Pearson correlation coefficient dengan threshold 0.2
+### 3.1 Label Encoder 
+Label Encoding diterapkan pada 10 fitur kategorikal dalam dataset menggunakan LabelEncoder dari scikit-learn. Fitur-fitur yang di-encode meliputi variabel target y (yes=1, no=0) serta fitur-fitur seperti job, marital, education, default, housing, loan, contact, month, dan poutcome. 
 
-- Mengurangi dimensionalitas dengan mempertahankan hanya fitur yang memiliki korelasi signifikan dengan target (Outcome)
-- Threshold 0.2 dipilih sebagai cut-off konservatif untuk memastikan fitur yang dipertahankan memiliki hubungan minimal dengan diabetes
-- Menghindari multicollinearity dan overfitting pada model sederhana
-
-Berdasarkan analisis korelasi, 4 fitur terpilih dengan correlation > 0.2:
-
-| Feature | Correlation with Outcome | Interpretasi Klinis |
-|---------|--------------------------|---------------------|
-| Glucose | 0.48 | Kadar glukosa darah (prediktor terkuat) |
-| BMI | 0.32 | Indeks massa tubuh (faktor risiko obesitas) |
-| Age | 0.24 | Usia (risiko meningkat seiring usia) |
-| Pregnancies | 0.22 | Riwayat kehamilan (gestational diabetes risk) |
-
-**Fitur yang Di-drop:**
-- **Insulin** (corr: 0.15) - Korelasi lemah + 48% missing values
-- **SkinThickness** (corr: 0.07) - Korelasi sangat lemah + 30% missing values
-- **BloodPressure** (corr: 0.18) - Di bawah threshold
-- **DiabetesPedigreeFunction** (corr: 0.17) - Di bawah threshold
-
-**Hasil:**
-- **Original:** 8 features → **Selected:** 4 features
-- **Dataset shape:** 636 samples × 4 features + 1 target
-- **Dimensionality reduction:** 50%
+### 3.2 Pembagian Data
+Dataset dibagi dengan proporsi 80:20, dimana 80% data digunakan untuk melatih model (training set) dan 20% sisanya digunakan untuk menguji performa model (testing set). Dengan total **45.211** sampel dalam dataset, pembagian ini menghasilkan sekitar **36.168** sampel untuk training dan **9.043** sampel untuk testing, jumlah yang cukup substansial untuk keduanya.
 
 ### 3.2 Data Standardization
+Standarisasi merupakan teknik preprocessing yang mentransformasi fitur-fitur numerik sehingga memiliki distribusi dengan mean (rata-rata) 0 dan standard deviation (simpangan baku) 1. 
 
 **Metode:** StandardScaler (Z-score normalization)
 
@@ -111,24 +91,9 @@ z = (x - μ) / σ
 Dimana:
 - μ = mean
 - σ = standard deviation
+  
+Scaler di-fit hanya pada training data (fit_transform) untuk menghitung mean dan standard deviation, kemudian transformasi yang sama diterapkan pada test data (transform) menggunakan statistik dari training set. Pendekatan ini mencegah data leakage dari test set ke training set, menjaga integritas evaluasi model.
 
-**Implementasi:**
-```python
-Pipeline Structure:
-1. StandardScaler  → Fit pada training data, transform pada train dan test
-2. Model           → Training dengan data yang sudah di-scale
-```
-
-**⚠️ CRITICAL: Pencegahan Data Leakage**
-- StandardScaler **hanya di-fit pada training data**
-- Test data **hanya di-transform** menggunakan parameter (mean, std) dari training data
-- Implementasi menggunakan **sklearn Pipeline** untuk memastikan proper scaling workflow
-- Scaling dilakukan **SETELAH** train-test split, **BUKAN SEBELUM**
-
-**Alasan Tidak Pakai Normalization (Min-Max Scaling):**
-- StandardScaler lebih robust terhadap outliers
-- Tidak mengasumsikan distribusi bounded (0-1)
-- Lebih cocok untuk algoritma linear yang mengasumsikan distribusi normal
 ---
 
 ## 4. Modeling  
