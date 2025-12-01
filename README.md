@@ -196,7 +196,6 @@ pickle
 
 ```
 
-
 [Link aplikasi](https://huggingface.co/spaces/atikansh20/bank-term-deposit-prediction)
 
 ![](https://github.com/adstika20/uts_datascience/blob/main/Image/Screenshot%20web%20app.png)
@@ -205,7 +204,11 @@ pickle
 
 ## Kesimpulan
 
-Diabetes melitus dengan angka kematian global 1,6 juta jiwa per tahun menuntut sistem deteksi dini yang lebih efektif, terutama melalui pendekatan berbasis data menggunakan variabel klinis sederhana. Penelitian ini mengembangkan model prediksi diabetes pada dataset PIMA dengan mengatasi kelemahan metodologis studi sebelumnya melalui pipeline preprocessing yang mencegah data leakage dan evaluasi metrik klinis komprehensif. Setelah feature selection menghasilkan 4 fitur optimal (Glucose, BMI, Age, Pregnancies) dan perbandingan empat algoritma via 10-fold cross-validation, **Logistic Regression terbukti paling optimal** dengan F1-score 0,5938, accuracy 78,45%, dan interpretability superior, dimana **Glucose konsisten menjadi prediktor terkuat**. Namun, **sensitivity 51,79% menunjukkan kelemahan kritis** karena hampir setengah pasien diabetes tidak terdeteksi, sehingga model belum layak untuk implementasi klinis tanpa optimasi lanjutan seperti threshold tuning atau penanganan class imbalance untuk meningkatkan sensitivity.
+## 7. Kesimpulan
+
+Penelitian ini berhasil mengembangkan sistem prediksi keberhasilan kampanye telemarketing bank untuk produk deposito jangka panjang menggunakan dataset Bank Marketing. Setelah melalui tahapan preprocessing yang komprehensif dan dilakukan perbandingan empat algoritma machine learning yaitu Random Forest (RF), Support Vector Machine (SVM), Gradient Boosting Classifier (GBC), dan K-Nearest Neighbors (KNN). Hasil evaluasi menunjukkan bahwa **Gradient Boosting Classifier (GBC) merupakan model terbaik** dengan accuracy 91%, precision 0.66, recall 0.43, dan F1-Score 0.52 untuk kelas positif (nasabah berlangganan), mengungguli RF, SVM, dan KNN dalam keseimbangan antara menangkap nasabah potensial dan meminimalkan false positive. Analisis feature importance mengungkapkan bahwa **duration** (durasi panggilan) adalah prediktor terkuat dengan importance score mendekati 1.0 across all models, diikuti oleh **pdays** (hari sejak kontak terakhir), **poutcome** (hasil kampanye sebelumnya), **month**, dan **age** sebagai faktor-faktor kunci yang mempengaruhi keputusan nasabah. Model GBC yang telah dioptimasi berhasil di-deploy melalui platform Hugging Face Spaces menggunakan framework Gradio, menyediakan interface user-friendly yang memungkinkan manajer kampanye untuk melakukan prediksi real-time.
+
+**Namun, penelitian ini memiliki keterbatasan kritis**, terutama pada performa prediksi kelas positif (class 1 - nasabah yang menerima tawaran deposito) yang masih rendah dengan **recall hanya 43%** pada model terbaik GBC. Hal ini mengindikasikan bahwa **lebih dari separuh nasabah potensial (57%) masih terlewatkan** oleh sistem prediksi. Untuk penelitian mendatang, diperlukan penanganan class imbalance yang lebih agresif, eksplorasi advanced algorithms dan historical interaction patterns untuk meningkatkan recall kelas positif minimal ke level 70-80% agar model dapat diimplementasikan secara efektif.
 
 ---
 
