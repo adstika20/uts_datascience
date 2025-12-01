@@ -11,11 +11,10 @@ Industri perbankan menghadapi tantangan signifikan dalam mengoptimalkan kampanye
 4. Bagaimana implementasi model terbaik dalam bentuk web application yang dapat digunakan oleh manajer kampanye?
 
 ### 1.3 Tujuan 
-1. Mengembangkan model prediksi diabetes dengan menerapkan pipeline preprocessing yang mencegah data leakage pada dataset PIMA
-2. Membangun model prediktif yang akurat untuk memprediksi keberhasilan telemarketing
-3. Mengidentifikasi faktor-faktor kunci yang mempengaruhi keputusan nasabah
-4. Membandingkan performa berbagai algoritma machine learning (Random Forest, Support Vector Machine, K-Nearest Neighbors, Gradient Boosting)
-5. Mengembangkan web application di Platform Hugging Face untuk deployment model
+1. Membangun model prediktif yang akurat untuk memprediksi keberhasilan telemarketing
+2. Mengidentifikasi faktor-faktor kunci yang mempengaruhi keputusan nasabah
+3. Membandingkan performa berbagai algoritma machine learning (Random Forest, Support Vector Machine, K-Nearest Neighbors, Gradient Boosting)
+4. Mengembangkan web application di Platform Hugging Face untuk deployment model
 
 ### 1.4 Manfaat
 1. Meningkatkan efisiensi kampanye dengan mengurangi jumlah panggilan yang tidak produktif
