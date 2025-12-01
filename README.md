@@ -157,37 +157,49 @@ Berdasarkan tabel di atas, **Random Forest (RF)** dan **Gradient Boosting Classi
 |---------------|-----|
 | ![GBC](https://github.com/adstika20/uts_datascience/blob/main/Image/confussion%20matrix%20gbc.png) | ![KNN](https://github.com/adstika20/uts_datascience/blob/main/Image/confussion%20matrix%20knn.png) |
 
-Berdasarkan confusion matrix dari keempat model, **Gradient Boosting Classifier (GBC)** dan **Random Forest (RF)** menunjukkan performa identik dengan kemampuan terbaik dalam memprediksi kelas mayoritas (class 0), dimana keduanya berhasil mengklasifikasikan 7752 True Negative dengan benar dan hanya 233 False Positive. Untuk kelas minoritas (class 1 - nasabah berlangganan), GBC dan RF mampu mendeteksi 445 True Positive namun masih melewatkan 613 False Negative, mengindikasikan bahwa sekitar 58% nasabah potensial masih terlewatkan. **SVM** menunjukkan performa terbaik dalam meminimalkan False Positive (hanya 148), namun memiliki False Negative tertinggi (782), yang berarti model ini terlalu konservatif dan melewatkan banyak peluang bisnis. Sebaliknya, **KNN** memiliki False Positive tertinggi (251) dan False Negative yang cukup besar (723), menunjukkan performa yang kurang konsisten dalam kedua kelas. Secara keseluruhan, GBC dan RF merupakan pilihan optimal karena memberikan trade-off terbaik antara menangkap nasabah potensial (True Positive) dan menghindari prediksi yang salah (False Positive), yang sangat penting untuk efisiensi kampanye telemarketing bank.
+Model **GBC** dan **RF** menunjukkan performa identik dengan kemampuan terbaik dalam memprediksi kelas mayoritas (class 0), dimana keduanya berhasil mengklasifikasikan 7752 True Negative dengan benar dan hanya 233 False Positive. Untuk kelas minoritas (class 1 - nasabah berlangganan), GBC dan RF mampu mendeteksi 445 True Positive namun masih melewatkan 613 False Negative, mengindikasikan bahwa sekitar 58% nasabah potensial masih terlewatkan. **SVM** menunjukkan performa terbaik dalam meminimalkan False Positive (hanya 148), namun memiliki False Negative tertinggi (782), yang berarti model ini terlalu konservatif dan melewatkan banyak peluang bisnis. Sebaliknya, **KNN** memiliki False Positive tertinggi (251) dan False Negative yang cukup besar (723), menunjukkan performa yang kurang konsisten dalam kedua kelas. Secara keseluruhan, GBC dan RF merupakan pilihan optimal karena memberikan trade-off terbaik antara menangkap nasabah potensial (True Positive) dan menghindari prediksi yang salah (False Positive), yang sangat penting untuk efisiensi kampanye telemarketing bank.
 
 
 ### 5.5 Feature Importance 
 
 ![Feature Importance](https://github.com/adstika20/uts_datascience/blob/main/Image/Feature%20importance.png)
 
-Analisis feature importance menunjukkan bahwa **duration** (durasi panggilan) merupakan fitur paling dominan dengan importance score mendekati 1.0 pada semua model (SVC, KNN, Random Forest, dan Gradient Boosting), mengindikasikan bahwa durasi interaksi telepon adalah prediktor terkuat untuk keberhasilan kampanye, meskipun fitur ini tidak dapat digunakan untuk prediksi sebelum panggilan dilakukan. Fitur **pdays** (hari sejak kontak terakhir) juga menunjukkan importance tinggi khususnya pada model SVC (~1.0), KNN (~0.67), dan poutcome (~0.88 pada SVC), menandakan bahwa riwayat interaksi sebelumnya sangat berpengaruh terhadap keputusan nasabah. Fitur-fitur **poutcome** (hasil kampanye sebelumnya), **month** (bulan kontak), dan **age** menunjukkan importance moderat (~0.3) yang konsisten across models, mengindikasikan bahwa faktor temporal dan demografis memiliki pengaruh signifikan namun tidak dominan. Menariknya, terdapat perbedaan prioritas fitur antar model: tree-based models (Random Forest dan Gradient Boosting) memberikan bobot lebih tinggi pada fitur **balance**, **job**, **marital**, dan **day**, sementara distance-based models (SVC dan KNN) lebih fokus pada **duration**, **pdays**, dan **contact**. Secara keseluruhan, untuk keperluan prediksi praktis (tanpa menggunakan duration), kombinasi fitur **poutcome**, **month**, **pdays**, **age**, dan **balance** menjadi prediktor kunci yang harus dioptimalkan dalam strategi telemarketing bank.
+Fitur **duration** (durasi panggilan) merupakan fitur paling dominan dengan importance score mendekati 1.0 pada semua model (SVC, KNN, Random Forest, dan Gradient Boosting), mengindikasikan bahwa durasi interaksi telepon adalah prediktor terkuat untuk keberhasilan kampanye, meskipun fitur ini tidak dapat digunakan untuk prediksi sebelum panggilan dilakukan. Fitur **pdays** (hari sejak kontak terakhir) juga menunjukkan importance tinggi khususnya pada model SVC (~1.0), KNN (~0.67), dan poutcome (~0.88 pada SVC), menandakan bahwa riwayat interaksi sebelumnya sangat berpengaruh terhadap keputusan nasabah. Fitur-fitur **poutcome** (hasil kampanye sebelumnya), **month** (bulan kontak), dan **age** menunjukkan importance moderat (~0.3) yang konsisten across models, mengindikasikan bahwa faktor temporal dan demografis memiliki pengaruh signifikan namun tidak dominan. Secara keseluruhan, untuk keperluan prediksi praktis (tanpa menggunakan duration), kombinasi fitur **poutcome**, **month**, **pdays**, **age**, dan **balance** menjadi prediktor kunci yang harus dioptimalkan dalam strategi telemarketing bank.
 
 ---
 
 ## 6. Deployment 
-Proyek ini dideploy menggunakan Hugging Face Spaces dengan framework Gradio untuk menyediakan antarmuka prediksi diabetes berbasis model machine learning yang telah dilatih.
-Tahapan Deployment
-- Menyiapkan model dan scaler '.pkl' (LR, SVM, RF, NN) dan scaler.pkl diunggah ke Hugging Face.
-- Membuat aplikasi Gradio (app.py)
-- Menambahkan requirements.txt
-- Push semua file ke Hugging Face
-Build dilakukan otomatis, lalu Space langsung aktif dengan URL publik.
+Model machine learning yang telah dibangun di-deploy menggunakan **Hugging Face Spaces** dengan framework **Gradio** untuk memudahkan akses dan penggunaan oleh end-user, khususnya manajer kampanye telemarketing bank.
 
-[Link aplikasi](https://huggingface.co/spaces/atikansh20/pima-diabetes-classifier)
+#### 6.1 Persiapan Model dan Artifacts
+Sebelum deployment, beberapa file penting dipersiapkan dan disimpan dalam format pickle (.pkl):
+- **Model Files**: `gbc_model.pkl`, `knn_model.pkl`, `svm_model.pkl`, `rf_model.pkl` - Model yang telah dilatih
+- **Preprocessing Objects**: `scaler.pkl` - StandardScaler untuk normalisasi data input
+- **Feature Configuration**: `feature_columns.pkl` - Daftar kolom fitur yang digunakan model
+- **Label Encoders**: `label_encoders.pkl` - Encoder untuk fitur kategorikal
 
-![](https://github.com/adstika20/datascience_proyek/blob/main/image/Hasil%20prediksi.png)
+#### 6.2 Pengembangan Aplikasi Web (app.py)
+Aplikasi Streamlit dikembangkan dengan fitur-fitur utama:
+- **Model Selection**: Dropdown untuk memilih model (GBC, KNN, SVM, RF)
+- **Input Form**: Form interaktif untuk memasukkan data nasabah (age, job, marital, education, balance, dll.)
+- **Prediction Output**: Menampilkan hasil prediksi (Yes/No) dan probability score
+- **Visualization**: Menampilkan confidence score dalam bentuk progress bar dan metric cards
 
----
+#### 6.3 Konfigurasi Dependencies
+File `requirements.txt` dibuat dengan library yang diperlukan:
+```
+streamlit
+pandas
+numpy
+scikit-learn
+pickle
 
-## Kesimpulan
+```
 
-## Kesimpulan
 
-Diabetes melitus dengan angka kematian global 1,6 juta jiwa per tahun menuntut sistem deteksi dini yang lebih efektif, terutama melalui pendekatan berbasis data menggunakan variabel klinis sederhana. Penelitian ini mengembangkan model prediksi diabetes pada dataset PIMA dengan mengatasi kelemahan metodologis studi sebelumnya melalui pipeline preprocessing yang mencegah data leakage dan evaluasi metrik klinis komprehensif. Setelah feature selection menghasilkan 4 fitur optimal (Glucose, BMI, Age, Pregnancies) dan perbandingan empat algoritma via 10-fold cross-validation, **Logistic Regression terbukti paling optimal** dengan F1-score 0,5938, accuracy 78,45%, dan interpretability superior, dimana **Glucose konsisten menjadi prediktor terkuat**. Namun, **sensitivity 51,79% menunjukkan kelemahan kritis** karena hampir setengah pasien diabetes tidak terdeteksi, sehingga model belum layak untuk implementasi klinis tanpa optimasi lanjutan seperti threshold tuning atau penanganan class imbalance untuk meningkatkan sensitivity.
+[Link aplikasi](https://huggingface.co/spaces/atikansh20/bank-term-deposit-prediction)
+
+![](https://github.com/adstika20/uts_datascience/blob/main/Image/Screenshot%20web%20app.png)
 
 ---
 
